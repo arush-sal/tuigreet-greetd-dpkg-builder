@@ -1,0 +1,9 @@
+Package: tuigreet-greetd
+Version: placeholder
+Section: greeter
+Priority: optional
+Architecture: amd64
+Essential: no
+Installed-Size: 3964224
+Maintainer: https://git.sr.ht/~kennylevinsen/greetd
+Description: greetd is a minimal and flexible login manager daemon that makes no assumptions about what you want to launch.

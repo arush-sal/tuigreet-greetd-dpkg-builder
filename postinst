@@ -1,0 +1,8 @@
+# Create the greetd user
+adduser --system --no-create-home --ingroup video greetd
+# Make greetd owner of the greetd config folder
+chown -R greetd:video /etc/greetd/
+
+# Look in the configuration file `/etc/greetd/config.toml` and edit as appropriate.
+# When done, enable and start greetd
+systemctl enable --now greetd
