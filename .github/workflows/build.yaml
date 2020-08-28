@@ -1,0 +1,15 @@
+name: Build Job
+on:
+  repository_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      name: checkout code.
+    - name: Create build
+      run: |
+        # Need input for...
+        # docker build  <further args>
+        # docker push...
+        # next steps
