@@ -1,0 +1,42 @@
+name: Release Tracker
+# Triggers on cron job expression: 00:00 UTC on the 1, 16 and 31th of every month
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 1/15 * *'
+jobs:
+  release-check:
+    env:
+      VERSION: "0.0.0"
+      IS_RELEASE_CREATED: false
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check for New Release.
+      run: |
+        echo "Steps to check if new release is created"
+        OLD_TAG=$(git ls-remote --tags https://github.com/arush-sal/tuigreet-greetd-dpkg-builder | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
+        NEW_TAG=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
+        echo "Old tag and New tags found are $OLD_TAG $NEW_TAG respectively."
+
+        if [[ $NEW_TAG != $OLD_TAG ]]; then
+          # set value of Version to the New Tag fetched.
+          echo "::set-env name=VERSION::$NEW_TAG"
+          # set the env to true if release is created.
+          echo '::set-env name=IS_RELEASE_CREATED::true'
+        fi
+
+    - name: Clone and update mirror
+      if: env.IS_RELEASE_CREATED == 'true'
+      run: |
+        git clone --bare https://git.sr.ht/~kennylevinsen/greetd
+        cd ./greetd.git
+        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/arush-sal/greetd
+
+    - name: Trigger Release build.
+      if: env.IS_RELEASE_CREATED == 'true'
+      run: |
+        curl -X POST \
+              -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+              -H "Accept: application/vnd.github.everest-preview+json" \
+              -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
+              --data "{\"event_type\": \"release_${{ env.VERSION }}\"}"
