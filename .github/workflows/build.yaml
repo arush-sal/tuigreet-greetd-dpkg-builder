@@ -1,6 +1,7 @@
 name: Build Job
 on:
-  repository_dispatch
+  schedule:
+    - cron:  '15 * * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -9,7 +10,5 @@ jobs:
       name: checkout code.
     - name: Create build
       run: |
-        # Need input for...
-        # docker build  <further args>
-        # docker push...
-        # next steps
+        apt-get update && apt-get install git -y
+        docker build --build-arg VERSION=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]') --build-arg TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} .
