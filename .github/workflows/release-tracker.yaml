@@ -8,7 +8,7 @@ jobs:
   release-check:
     env:
       IS_RELEASE_CREATED: false
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
       name: checkout code.
@@ -16,13 +16,13 @@ jobs:
       run: |
         echo "Steps to check if new release is created"
         echo "Add prerequisite"
-        apk --no-cache add curl git
+        apt update && apt install -y git
         echo "Get new and old tags"
-        OLD_TAG=$(curl -s https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/tags | jq -r '.[0].name')
+        OLD_TAG=$(git ls-remote --tags https://github.com/arush-sal/tuigreet-greetd-dpkg-builder | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         NEW_TAG=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         echo "Old tag and New tags found are $OLD_TAG $NEW_TAG respectively."
-        
-        if [[ $NEW_TAG != $OLD_TAG ]]; then 
+
+        if [[ $NEW_TAG != $OLD_TAG ]]; then
           # set the env to true if release is created.
           echo '::set-env name=IS_RELEASE_CREATED::true'
         fi
