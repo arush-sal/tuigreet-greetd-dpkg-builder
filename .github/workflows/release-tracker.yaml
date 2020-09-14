@@ -1,8 +1,9 @@
 name: Release Tracker
 # Triggers on cron job expression: Daily on 21:43
 on:
-  schedule:
-    - cron:  '5 * * * *'
+  workflow_dispatch:
+#   schedule:
+#     - cron:  '5 * * * *'
 jobs:
   release-check:
     env:
