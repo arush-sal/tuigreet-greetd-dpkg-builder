@@ -39,4 +39,4 @@ jobs:
               -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
               -H "Accept: application/vnd.github.everest-preview+json" \
               -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
-              --data '{"event_type": "release_env.VERSION"}'
+              --data "{'event_type': \"release_${{ env.VERSION }}\"}"
