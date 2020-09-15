@@ -1,4 +1,4 @@
-name: Greetd Mirror Update
+name: Update greetd mirror
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -6,9 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Update clone
-      uses: actions/checkout@master
-    - run: |
+    - name: Clone and update mirror
+      run: |
         git clone --bare https://git.sr.ht/~kennylevinsen/greetd
         cd ./greetd.git
-        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/greetd
+        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/arush-sal/greetd
