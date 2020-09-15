@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: Update clone
       uses: actions/checkout@master
-      - run: |
-          git clone --bare https://git.sr.ht/~kennylevinsen/greetd
-          cd ./greetd.git
-          git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/greetd
+    - run: |
+        git clone --bare https://git.sr.ht/~kennylevinsen/greetd
+        cd ./greetd.git
+        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/greetd
