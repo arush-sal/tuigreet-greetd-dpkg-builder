@@ -7,11 +7,10 @@ on:
 jobs:
   release-check:
     env:
+      VERSION: "0.0.0"
       IS_RELEASE_CREATED: false
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-      name: Code Checkout.
     - name: Check for New Release.
       run: |
         echo "Steps to check if new release is created"
@@ -20,9 +19,18 @@ jobs:
         echo "Old tag and New tags found are $OLD_TAG $NEW_TAG respectively."
 
         if [[ $NEW_TAG != $OLD_TAG ]]; then
+          # set value of Version to the New Tag fetched.
+          echo "::set-env name=VERSION::$NEW_TAG"
           # set the env to true if release is created.
           echo '::set-env name=IS_RELEASE_CREATED::true'
         fi
+
+    - name: Clone and update mirror
+      if: env.IS_RELEASE_CREATED == 'true'
+      run: |
+        git clone --bare https://git.sr.ht/~kennylevinsen/greetd
+        cd ./greetd.git
+        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/arush-sal/greetd
 
     - name: Trigger Release build.
       if: env.IS_RELEASE_CREATED == 'true'
@@ -31,4 +39,4 @@ jobs:
               -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
               -H "Accept: application/vnd.github.everest-preview+json" \
               -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
-              --data '{"event_type": "build_application"}'
+              --data '{"event_type": "release_env.VERSION"}'
