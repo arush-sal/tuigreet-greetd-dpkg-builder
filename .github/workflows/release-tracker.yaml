@@ -1,9 +1,9 @@
 name: Release Tracker
-# Triggers on cron job expression: Daily on 21:43
+# Triggers on cron job expression: 00:00 UTC on the 1, 16 and 31th of every month
 on:
   workflow_dispatch:
-#   schedule:
-#     - cron:  '5 * * * *'
+  schedule:
+    - cron:  '0 0 1/15 * *'
 jobs:
   release-check:
     env:
