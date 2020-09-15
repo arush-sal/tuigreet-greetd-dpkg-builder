@@ -1,11 +1,11 @@
 name: Greetd Mirror Update
 on:
-  repository_dispatch:
+  repository_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Fetch lone
+    - name: Update clone
       run: |
         git clone --bare https://git.sr.ht/~kennylevinsen/greetd
         cd ./greetd.git
