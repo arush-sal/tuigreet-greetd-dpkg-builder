@@ -26,18 +26,18 @@ ARG VERSION
 ARG TOKEN
 
 ENV RELEASE_SCRIPT_URL="https://gist.githubusercontent.com/arush-sal/f169e7477809ee025c4da1aa0f40b029/raw/ef0e431fc04fecddc766b63f95c5c8aa87d1f552/create-github-release.sh"
-ENV ASSEST_SCRIPT_URL="https://gist.githubusercontent.com/stefanbuck/ce788fee19ab6eb0b4447a85fc99f447/raw/dbadd7d310ce8446de89c4ffdf1db0b400d0f6c3/upload-github-release-asset.sh"
+ENV ASSET_SCRIPT_URL="https://gist.githubusercontent.com/stefanbuck/ce788fee19ab6eb0b4447a85fc99f447/raw/dbadd7d310ce8446de89c4ffdf1db0b400d0f6c3/upload-github-release-asset.sh"
 
 COPY --from=deb-builder /tuigreet-greetd* /
 
 RUN apk --no-cache add curl
 RUN curl $RELEASE_SCRIPT_URL | sh
-RUN export ASSEST=$(find / -iname *.deb) && \
+RUN export ASSET=$(find / -iname *.deb) && \
     export github_api_token=$TOKEN && \
     export owner=arush-sal && \
     export repo=tuigreet-greetd-dpkg-builder && \
     export tag="$VERSION" && \
-    export filename=$ASSEST && \
+    export filename=$ASSET && \
     echo $filename && sleep 2 && \
-    curl $ASSEST_SCRIPT_URL | sh
+    curl $ASSET_SCRIPT_URL | sh
 CMD sh

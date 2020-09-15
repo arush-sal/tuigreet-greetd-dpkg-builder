@@ -11,7 +11,7 @@ jobs:
       IS_RELEASE_CREATED: false
     runs-on: ubuntu-latest
     steps:
-    - name: Check for New Release.
+    - name: Check for New Release
       run: |
         echo "Steps to check if new release is created"
         OLD_TAG=$(git ls-remote --tags https://github.com/arush-sal/tuigreet-greetd-dpkg-builder | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
@@ -32,7 +32,7 @@ jobs:
         cd ./greetd.git
         git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/arush-sal/greetd
 
-    - name: Trigger Release build.
+    - name: Trigger Release build
       if: env.IS_RELEASE_CREATED == 'true'
       run: |
         curl -X POST \

@@ -7,6 +7,6 @@ jobs:
     steps:
     - uses: actions/checkout@master
       name: Code Checkout.
-    - name: Build and Release artrifacts.
+    - name: Build and Release artifacts
       run: |
         docker build --build-arg VERSION=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]') --build-arg TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} .
