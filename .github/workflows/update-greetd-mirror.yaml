@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Update clone
-      run: |
-        git clone --bare https://git.sr.ht/~kennylevinsen/greetd
-        cd ./greetd.git
-        git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/greetd
+      uses: actions/checkout@master
+      - run: |
+          git clone --bare https://git.sr.ht/~kennylevinsen/greetd
+          cd ./greetd.git
+          git push --mirror https://arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/greetd
