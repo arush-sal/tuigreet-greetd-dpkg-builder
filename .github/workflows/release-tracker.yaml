@@ -20,7 +20,7 @@ jobs:
 
         if [[ $NEW_TAG != $OLD_TAG ]]; then
           # set value of Version to the New Tag fetched.
-          echo "VERSION=$NEW_TAG" >> $GITHUB_ENV
+          echo "VERSION=$NEW_TAG" >> $VERSION
           # set the env to true if release is created.
           echo 'IS_RELEASE_CREATED=true' >> $GITHUB_ENV
         fi
