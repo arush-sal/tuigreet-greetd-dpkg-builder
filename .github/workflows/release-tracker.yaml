@@ -20,9 +20,9 @@ jobs:
 
         if [[ $NEW_TAG != $OLD_TAG ]]; then
           # set value of Version to the New Tag fetched.
-          echo "::set-env name=VERSION::$NEW_TAG"
+          echo "$NEW_TAG" >> $VERSION
           # set the env to true if release is created.
-          echo '::set-env name=IS_RELEASE_CREATED::true'
+          echo 'true' >> $IS_RELEASE_CREATED
         fi
 
     - name: Clone and update mirror
