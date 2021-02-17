@@ -21,7 +21,7 @@ jobs:
         if [[ $NEW_TAG != $OLD_TAG ]]; then
           echo "There is a new release. Release Builder will be triggered."
           # set value of Version to the New Tag fetched.
-          echo "VERSION=$NEW_TAG" >> $VERSION
+          echo "VERSION=$NEW_TAG"
           # set the env to true if release is created.
           echo 'IS_RELEASE_CREATED=true' >> $GITHUB_ENV
         fi
