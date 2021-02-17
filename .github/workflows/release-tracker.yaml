@@ -20,9 +20,9 @@ jobs:
 
         if [[ $NEW_TAG != $OLD_TAG ]]; then
           # set value of Version to the New Tag fetched.
-          echo "$NEW_TAG" >> $VERSION
+          echo "VERSION=$NEW_TAG" >> $GITHUB_ENV
           # set the env to true if release is created.
-          echo 'true' >> $IS_RELEASE_CREATED
+          echo 'IS_RELEASE_CREATED=true' >> $GITHUB_ENV
         fi
 
     - name: Clone and update mirror
