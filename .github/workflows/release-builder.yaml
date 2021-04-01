@@ -5,22 +5,26 @@ on:
       vTag:
           description: 'Version Tag'     
           required: false
-          default: '0.0.0'
+          default: ''
   repository_dispatch:
 jobs:
   release-build:
+    env:
+      tag: ""
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
       name: Code Checkout.
     - name: Determine version
       run: |
-        if [[ $vTag == "0.0.0" ]]; then
+        if [[ $vTag == "" ]]; then
           tag=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         else
           tag=$vTag
         fi
         echo "Tag to be used is $tag"
+        echo "tag=$tag" >> $GITHUB_ENV
     - name: Build and Release artifacts
       run: |
-        docker build --build-arg VERSION=$tag --build-arg TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} .
+        docker build --build-arg VERSION=${{ env.tag }} --build-arg TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} .
+
