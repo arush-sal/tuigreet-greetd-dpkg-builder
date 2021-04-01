@@ -15,7 +15,7 @@ jobs:
       name: Code Checkout.
     - name: Determine version
       run: |
-        if [[ $vTag == "" ]]; then
+        if [[ $vTag == "0.0.0" ]]; then
           tag=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         else
           tag=$vTag
