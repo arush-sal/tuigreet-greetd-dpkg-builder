@@ -20,6 +20,7 @@ jobs:
         else
           tag=$vTag
         fi
+        echo "Tag to be used is $tag"
     - name: Build and Release artifacts
       run: |
         docker build --build-arg VERSION=$tag --build-arg TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} .
