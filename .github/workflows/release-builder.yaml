@@ -1,6 +1,7 @@
 name: Release Builder
 on:
-  repository_dispatch
+  workflow_dispatch:
+  repository_dispatch:
 jobs:
   release-build:
     runs-on: ubuntu-latest
