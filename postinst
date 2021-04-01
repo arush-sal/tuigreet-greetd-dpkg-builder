@@ -1,5 +1,5 @@
 # Create the greetd user
-adduser --system --no-create-home
+adduser --system --no-create-home greetd
 # Add it to video group
 usermod -aG video greetd
 # Make greetd owner of the greetd config folder
