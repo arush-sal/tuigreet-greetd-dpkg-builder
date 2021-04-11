@@ -5,9 +5,9 @@ usermod -aG video greetd
 # Make greetd owner of the greetd config folder
 chown -R greetd:video /etc/greetd/
 
+# Setup greetd as the default display manager
+echo "/usr/local/bin/tuigreet" > /etc/X11/default-display-manager
+
 # Look in the configuration file `/etc/greetd/config.toml` and edit as appropriate.
 # When done, enable greetd
 systemctl enable greetd
-
-# Setup greetd as the default display manager
-echo "/usr/local/bin/tuigreet" > /etc/X11/default-display-manager
