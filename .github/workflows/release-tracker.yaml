@@ -18,7 +18,7 @@ jobs:
         NEW_TAG=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         echo "Old tag and New tags found are $OLD_TAG $NEW_TAG respectively."
 
-        if [[ $NEW_TAG != $OLD_TAG ]]; then
+        if awk 'BEGIN {exit !('$OLD_TAG' < '$NEW_TAG')}'; then
           echo "There is a new release. Release Builder will be triggered."
           # set value of Version to the New Tag fetched.
           echo "VERSION=$NEW_TAG"
