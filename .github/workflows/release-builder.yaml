@@ -17,10 +17,10 @@ jobs:
       name: Code Checkout.
     - name: Determine version
       run: |
-        if [[ ${{ github.event.inputs.vTag }} == "" ]]; then
+        if [[ "${{ github.event.inputs.vTag }}" == "" ]]; then
           tag=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '[0-9]\.[0-9]\.[0-9]')
         else
-          tag=${{ github.event.inputs.vTag }}
+          tag="${{ github.event.inputs.vTag }}"
         fi
         echo "Tag to be used is $tag"
         echo "tag=$tag" >> $GITHUB_ENV
