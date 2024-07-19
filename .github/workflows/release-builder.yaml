@@ -26,7 +26,7 @@ jobs:
         echo "tag=$tag" >> $GITHUB_ENV
     - name: Build and extract artifact
       run: |
-        docker build -v $(pwd):/build --build-arg VERSION=${{ env.tag }} -t tuigreet .
+        docker build --build-arg VERSION=${{ env.tag }} -t tuigreet .
         container_id=$(docker create tuigreet)
         docker cp "$container_id:/tuigreet-greetd_${{ env.tag }}.deb" "$()/tuigreet-greetd_${{ env.tag }}.deb"
         docker rm "$container_id"
