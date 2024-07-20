@@ -14,15 +14,14 @@ jobs:
     - name: Check for New Release
       run: |
         echo "Steps to check if new release is created"
-        OLD_TAG=$(git ls-remote --tags https://github.com/arush-sal/tuigreet-greetd-dpkg-builder | tail -n 1 | grep -o -E '([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)')
-        NEW_TAG=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | tail -n 1 | grep -o -E '([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)\.([0-9]|[1-9][0-9]*)')
-        echo "Old tag and New tags found are $OLD_TAG $NEW_TAG respectively."
+        BUILDER_TAGS=$(git ls-remote --tags https://github.com/arush-sal/tuigreet-greetd-dpkg-builder | awk '{print $2}' | sed 's|refs/tags/||' | grep -v -E '\^\{\}')
+        GREETD_TAGS=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | awk '{print $2}' | sed 's|refs/tags/||' | grep -v -E '\^\{\}')
+        NEW_TAGS=$(comm -23 <(echo "$GREETD_TAGS" | sort) <(echo "$BUILDER_TAGS" | sort))
 
-        if awk 'BEGIN {exit !('$OLD_TAG' < '$NEW_TAG')}'; then
+        if [[ -n $NEW_TAGS ]]; then
           echo "There is a new release. Release Builder will be triggered."
-          # set value of Version to the New Tag fetched.
-          echo "VERSION=$NEW_TAG"
-          echo "VERSION=$NEW_TAG" >> $GITHUB_ENV
+          echo "VERSION=$NEW_TAGS"
+          echo "VERSION=$NEW_TAGS" >> $GITHUB_ENV
           # set the env to true if release is created.
           echo 'IS_RELEASE_CREATED=true' >> $GITHUB_ENV
         fi
@@ -37,8 +36,10 @@ jobs:
     - name: Trigger Release build
       if: env.IS_RELEASE_CREATED == 'true'
       run: |
-        curl -X POST \
-              -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
-              -H "Accept: application/vnd.github.everest-preview+json" \
-              -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
-              --data "{\"event_type\": \"release_${{ env.VERSION }}\"}"
+        for TAG in $(echo ${{ env.VERSION }}); do
+          curl -X POST \
+                -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+                -H "Accept: application/vnd.github.everest-preview+json" \
+                -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
+                --data "{\"event_type\": \"release_$TAG\"}"
+        done
