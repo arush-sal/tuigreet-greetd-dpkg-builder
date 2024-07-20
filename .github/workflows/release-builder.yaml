@@ -12,6 +12,8 @@ jobs:
     env:
       tag: ""
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@master
       name: Code Checkout.
@@ -42,4 +44,5 @@ jobs:
     - name: Release artifact
       uses: softprops/action-gh-release@v2
       with:
+        tag_name: ${{ env.tag }}
         files: tuigreet-greetd_${{ env.tag }}.deb
