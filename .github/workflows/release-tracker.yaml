@@ -18,10 +18,10 @@ jobs:
         GREETD_TAGS=$(git ls-remote --tags https://git.sr.ht/~kennylevinsen/greetd | awk '{print $2}' | sed 's|refs/tags/||' | grep -v -E '\^\{\}')
         NEW_TAGS=$(comm -23 <(echo "$GREETD_TAGS" | sort) <(echo "$BUILDER_TAGS" | sort))
 
-        if [[ -n $NEW_TAGS ]]; then
+        if [[ -n ${NEW_TAGS} ]]; then
           echo "There is a new release. Release Builder will be triggered."
-          echo "VERSION=$NEW_TAGS"
-          echo "VERSION=$NEW_TAGS" >> $GITHUB_ENV
+          echo "VERSION=${NEW_TAGS}"
+          echo "VERSION=${NEW_TAGS}" >> $GITHUB_ENV
           # set the env to true if release is created.
           echo 'IS_RELEASE_CREATED=true' >> $GITHUB_ENV
         fi
