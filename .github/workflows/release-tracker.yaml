@@ -37,7 +37,9 @@ jobs:
     - name: Trigger Release build
       if: env.IS_RELEASE_CREATED == 'true'
       run: |
-        for TAG in $(echo ${{ env.VERSION }}); do
+        echo "${{ env.VERSION }}" > version.txt
+        for TAG in $(cat version.txt); do
+          echo "Triggering release build for $TAG"
           curl -X POST \
                 -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
                 -H "Accept: application/vnd.github.everest-preview+json" \
