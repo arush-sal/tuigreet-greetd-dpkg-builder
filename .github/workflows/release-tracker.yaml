@@ -40,9 +40,9 @@ jobs:
         echo "${{ env.VERSION }}" > version.txt
         for TAG in $(cat version.txt); do
           echo "Triggering release build for $TAG"
-          curl -X POST \
+          curl --silent -X POST \
                 -u "arush-sal:${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
                 -H "Accept: application/vnd.github.everest-preview+json" \
                 -H "Content-Type: application/json" https://api.github.com/repos/arush-sal/tuigreet-greetd-dpkg-builder/dispatches \
-                --data "{\"event_type\": \"release\",\"client_payload\": {\"tag\": \"$TAG\"}}"
+                --data "{\"event_type\": \"release_$TAG\",\"client_payload\": {\"tag\": \"$TAG\"}}"
         done

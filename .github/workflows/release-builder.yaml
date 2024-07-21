@@ -7,7 +7,6 @@ on:
           required: false
           default: ''
   repository_dispatch:
-    types: [release]
 jobs:
   release-build:
     env:
